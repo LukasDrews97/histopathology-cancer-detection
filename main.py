@@ -6,7 +6,7 @@ from torch.utils.data import random_split
 
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-dataset = HistopathologicImageDataset(labels_file="./data/train_labels.csv", img_dir="./data/train/", train=True, transform=transforms.Compose([
+dataset = HistopathologicImageDataset(labels_file="./data/train_labels.csv", img_dir="./data/train/", transform=transforms.Compose([
     transforms.PILToTensor(),
     transforms.Resize([32,32]),
     transforms.Grayscale(num_output_channels=3),
@@ -16,7 +16,7 @@ dataset = HistopathologicImageDataset(labels_file="./data/train_labels.csv", img
 
 train_set, test_set = random_split(dataset, [176_020, 44_005])
 train_loader = DataLoader(dataset=train_set, batch_size=64, shuffle=True)
-test_loader = DataLoader(dataset=test_set, batch_size=64, shuffle=False)
+test_loader = DataLoader(dataset=test_set, batch_size=64, shuffle=True)
 
 
 def main():

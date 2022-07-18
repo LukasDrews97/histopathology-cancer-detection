@@ -6,7 +6,7 @@ from torch.utils.data import Dataset
 from PIL import Image
 
 class HistopathologicImageDataset(Dataset):
-    def __init__(self, labels_file, img_dir, train=True, transform=None, target_transform=None):
+    def __init__(self, labels_file, img_dir, transform=None, target_transform=None):
         self.img_labels = pd.read_csv(labels_file)
         self.img_dir = img_dir
         self.transform = transform
