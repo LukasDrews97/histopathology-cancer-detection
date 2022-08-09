@@ -94,7 +94,7 @@ def train():
                 list_of_labels.clear()
                 list_of_preds.clear()
 
-    train_metrics = pd.Dataframe(
+    train_metrics = pd.DataFrame(
         {'bce_loss': losses, 
         'accuracy': accuracy, 
         'precision': precision, 
