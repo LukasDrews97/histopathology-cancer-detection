@@ -32,7 +32,6 @@ class Net(nn.Module):
         modules.append(nn.Sigmoid())
 
         self.model = nn.Sequential(*modules)
-
     
     def forward(self, imgs):
         return self.model(imgs).flatten()
