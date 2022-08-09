@@ -17,7 +17,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 dataset = HistopathologicImageDataset(labels_file="./data/train_labels.csv", img_dir="./data/train/", transform=transforms.Compose([
     transforms.PILToTensor(),
     transforms.ConvertImageDtype(dtype=torch.float32),
-    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    #transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
 ]))
 
 
@@ -102,8 +102,8 @@ def train():
         'f1_score': f1_score,
         'auroc': auroc
         })
-    train_metrics.to_csv('train_metrics.csv')
-    PATH = "./second_model.pth"
+    train_metrics.to_csv('train_metrics_3.csv')
+    PATH = "./third_model.pth"
     torch.save(net.state_dict(), PATH)
 
 
@@ -127,17 +127,17 @@ def evaluate():
     labels = torch.cat(list_of_labels)
     preds = torch.cat(list_of_preds)
     metrics = metric_collection(preds, labels)
+    print(metrics)
     test_metrics = pd.DataFrame({
         'accuracy': metrics['Accuracy'].item(),
         'precision': metrics['Precision'].item(),
         'recall': metrics['Recall'].item(),
         'f1_score': metrics['F1Score'].item(),
         'auroc': metrics['AUROC'].item()
-        })
+        }, index=[0])
     test_metrics.to_csv('test_metrics.csv')
-    print(metrics)
 
 
 if __name__=="__main__": 
-    train()
-    #evaluate()
+    #train()
+    evaluate()
