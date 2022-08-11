@@ -34,14 +34,14 @@ class Net(nn.Module):
         
         # input_shape=[128,1,1], output_shape=[128]
         modules.append(nn.Flatten())
-        modules.append(nn.Linear(in_features=128, out_features=256))
-        modules.append(nn.ReLU())
-        modules.append(nn.Linear(in_features=256, out_features=128))
-        modules.append(nn.ReLU())
-        modules.append(nn.Dropout(0.2))
         modules.append(nn.Linear(in_features=128, out_features=64))
         modules.append(nn.ReLU())
-        modules.append(nn.Linear(in_features=64, out_features=1))
+        modules.append(nn.Linear(in_features=64, out_features=32))
+        modules.append(nn.ReLU())
+        modules.append(nn.Dropout(0.2))
+        modules.append(nn.Linear(in_features=32, out_features=16))
+        modules.append(nn.ReLU())
+        modules.append(nn.Linear(in_features=16, out_features=1))
         modules.append(nn.Sigmoid())
 
         self.model = nn.Sequential(*modules)
