@@ -17,7 +17,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 dataset = HistopathologicImageDataset(labels_file="./data/train_labels.csv", img_dir="./data/train/", transform=transforms.Compose([
     transforms.PILToTensor(),
     transforms.ConvertImageDtype(dtype=torch.float32),
-    #transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    transforms.Normalize([0.7025, 0.5463, 0.6965], [0.2389, 0.2821, 0.2163]),
 ]))
 
 
@@ -29,6 +29,9 @@ def seed_worker(worker_id):
 #TODO: balance labels?, do image Transformations?
 g = torch.Generator()
 g.manual_seed(42)
+torch.manual_seed(42)
+np.random.seed(42)
+random.seed(42)
 # Use worker_init_fn() and generator to preserve reproducibility
 train_set, test_set = random_split(dataset, [176_020, 44_005])
 train_loader = DataLoader(dataset=train_set, batch_size=64, shuffle=True, worker_init_fn=seed_worker, generator=g)
@@ -39,7 +42,7 @@ net = Net(img_dim=[3, 96, 96])
 net.to(device)
 
 criterion = nn.BCELoss()
-optimizer = optim.Adam(net.parameters(), lr=1e-4)
+optimizer = optim.Adam(net.parameters(), lr=1e-3)
 
 metric_collection = MetricCollection([
     Accuracy(),
@@ -50,7 +53,7 @@ metric_collection = MetricCollection([
 ])
 
 
-def train():
+def train(name):
     losses = []
     accuracy = []
     precision = []
@@ -58,7 +61,7 @@ def train():
     f1_score = []
     auroc = []
 
-    for epoch in tqdm(range(1)):
+    for epoch in tqdm(range(10)):
         running_loss = 0.0
         list_of_preds = []
         list_of_labels = []
@@ -102,13 +105,13 @@ def train():
         'f1_score': f1_score,
         'auroc': auroc
         })
-    train_metrics.to_csv('train_metrics_3.csv')
-    PATH = "./third_model.pth"
+    train_metrics.to_csv(f'{name}_train.csv')
+    PATH = f"./{name}.pth"
     torch.save(net.state_dict(), PATH)
 
 
-def evaluate():
-    PATH = "./second_model.pth"
+def evaluate(name):
+    PATH = f"./{name}.pth"
     net.load_state_dict(torch.load(PATH))
     net.cpu()
 
@@ -135,9 +138,14 @@ def evaluate():
         'f1_score': metrics['F1Score'].item(),
         'auroc': metrics['AUROC'].item()
         }, index=[0])
-    test_metrics.to_csv('test_metrics.csv')
+    test_metrics.to_csv(f'{name}_test.csv')
+
 
 
 if __name__=="__main__": 
-    #train()
-    evaluate()
+    #mean, std = calculate_mean_std()
+    #print(mean)
+    #print(std)
+    name = "cnn2"
+    train(name)
+    evaluate(name)
