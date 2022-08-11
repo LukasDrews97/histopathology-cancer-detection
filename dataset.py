@@ -12,7 +12,6 @@ class HistopathologicImageDataset(Dataset):
         self.transform = transform
         self.target_transform = target_transform
 
-
     def __len__(self):
         return len(self.img_labels)
 
