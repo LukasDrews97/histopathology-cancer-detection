@@ -1,5 +1,5 @@
 # histopathology-cancer-detection
-In this project, we tackled the problem of classifying cancer in histopathologic scans of lymph node sections, based on a kaggle challenge<sup>[1](#myfootnote1)</sup>. Check out `demo.ipynb` for quick a demonstration.
+In this project, we tackled the problem of classifying cancer in histopathologic scans of lymph node sections, based on a kaggle challenge<sup>[1](1)</sup>. Check out `demo.ipynb` for quick a demonstration.
 
 ![image info](./imgs/demo.png)
 
@@ -26,7 +26,7 @@ In this project, we tackled the problem of classifying cancer in histopathologic
 |`cnn_2.py`|An extension of the simple CNN, referenced in the paper as "Extended CNN"|
 |`resnet18.py`|ResNet18, using the pytorch implementation|
 |`densenet121.py`|DenseNet101, using the pytorch implementation|
-|`mlp_mixer.py`|A custom implementation of the MLP-Mixer architecture proposed by Google <sup>[2](#myfootnote2),</sup><sup>[3](#myfootnote3)</sup>. |
+|`mlp_mixer.py`|A custom implementation of the MLP-Mixer architecture proposed by Google <sup>[2](2),</sup><sup>[3](3)</sup>. |
 
 -----------------------------------------------------------------------------------------------------------------------
 ## Install
@@ -111,7 +111,7 @@ $ python .\train.py --name baseline_cnn --model_name cnn_1 --lr 0.003 --epochs 5
 
 -----------------------------------------------------------------------------------------------------------------------
 
-<a name="kaggle">1</a>: https://www.kaggle.com/competitions/histopathologic-cancer-detection/ <br>
-<a name="kaggle">2</a>: https://arxiv.org/pdf/2105.01601.pdf <br>
-<a name="kaggle">3</a>: https://github.com/google-research/vision_transformer/blob/linen/vit_jax/models_mixer.py <br>
+<a name="1">1</a>: https://www.kaggle.com/competitions/histopathologic-cancer-detection/ <br>
+<a name="2">2</a>: https://arxiv.org/pdf/2105.01601.pdf <br>
+<a name="3">3</a>: https://github.com/google-research/vision_transformer/blob/linen/vit_jax/models_mixer.py <br>
 
