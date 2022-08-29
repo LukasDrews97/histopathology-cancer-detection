@@ -12,7 +12,7 @@ In this project, we tackled the problem of classifying cancer in histopathologic
 |`data_loading.py`|Loads the data from the dataset class to create training and test set. Transforms the data according to project specifications.|
 |`train.py`|Creates and trains a model using command line arguments.|
 |`test.py`|Loads a trained model and evaluates on the test set using command line arguments.|
-|`main.py`|Combination of `train.py` and `test.py`. First creates a model, the evaluates it.|
+|`main.py`|Combination of `train.py` and `test.py`. First creates a model, then evaluates it.|
 |`requirements.txt`|Lists all packages used for the project. Designed to be used with pip.|
 |`architecture`|Folder containing all the models that can be used.|
 |`final_model.pth`|Best model. Can be loaded with pytorch.|
