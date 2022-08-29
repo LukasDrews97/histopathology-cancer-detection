@@ -34,7 +34,6 @@ In this project, we tackled the problem of classifying cancer in histopathologic
 ### Dependencies:
 - Python 3.10.6
 - requirements.txt
-<br>
 
 ### Instructions:
 - clone histopathology-cancer-detection
