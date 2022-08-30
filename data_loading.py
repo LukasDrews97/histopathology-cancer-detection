@@ -7,9 +7,13 @@ from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
 from dataset import HistopathologicImageDataset
 
-def get_train_and_test_loader():
+def get_train_and_test_loader(labels_file=None, img_dir=None):
     '''load dataset and return dataloader for training and testing '''
-    dataset = HistopathologicImageDataset(labels_file="./data/train_labels.csv", img_dir="./data/train/", transform=transforms.Compose([
+    if labels_file is None:
+        labels_file="./data/train_labels.csv"
+    if img_dir is None:
+        img_dir="./data/train/"
+    dataset = HistopathologicImageDataset(labels_file=labels_file, img_dir=img_dir, transform=transforms.Compose([
         transforms.PILToTensor(),
         transforms.ConvertImageDtype(dtype=torch.float32),
         transforms.Normalize([0.7025, 0.5463, 0.6965], [0.2389, 0.2821, 0.2163]),

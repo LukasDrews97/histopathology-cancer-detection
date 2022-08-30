@@ -10,7 +10,7 @@ import pandas as pd
 from argparse import ArgumentParser
 import importlib
 
-from data_loading_optuna import get_train_and_test_loader
+from ..data_loading import get_train_and_test_loader
 
 
 def train_and_test(param, trial, name, model_name, epochs=None):
@@ -32,9 +32,7 @@ def train_and_test(param, trial, name, model_name, epochs=None):
     net = net.to(device)
 
     # Create data loader
-    train_loader, test_loader = get_train_and_test_loader(
-        batch_size=param["batch_size"]
-    )
+    train_loader, test_loader = get_train_and_test_loader()
 
     criterion = nn.BCELoss()
     optimizer = optim.Adam(
