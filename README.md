@@ -17,6 +17,7 @@ In this project, we tackled the problem of classifying cancer in histopathologic
 |`architecture`|Folder containing all the models that can be used.|
 |`final_model.pth`|Best model. Can be loaded with pytorch.|
 |`demo.ipynb`|A python notebook demonstrating the classification process with examples.|
+|`Hyperparameter_tuning`|Folder containing a modified main and train file used for Hyperparameter Tuning, aswell as models that were trained using Hyperparameter Tuning|
 
 ### Available Models:
 
