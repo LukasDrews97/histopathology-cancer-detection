@@ -10,12 +10,31 @@ import importlib
 from data_loading import get_train_and_test_loader
 
 
-def evaluate_testset(name, model_name):
+def evaluate_testset(name, model_name, params=None, labels_file=None, img_dir=None):
+    """
+    Evaluate a trained deep learning model on the testset.
+    Args:
+        name:
+            Name of the output files.
+        model_name:
+            Module name of the model architecture.
+        params:
+            Special network params.
+        labels_file:
+            File path for image labels.
+        img_dir:
+            File path for images.
+
+    """
+
     # Import model, e.g. "cnn_2
     model_module = importlib.import_module(f"architecture.{model_name}")
 
     # Create neural network
-    net = model_module.Net(img_dim=[3, 96, 96])
+    if params:
+        net = model_module.Net(img_dim=[3, 96, 96], **params)
+    else:
+        net = model_module.Net(img_dim=[3, 96, 96])
 
     # Load model parameters
     PATH = f"./{name}.pth"
@@ -23,7 +42,7 @@ def evaluate_testset(name, model_name):
     net.cpu()
 
     # Create data loader
-    _, test_loader = get_train_and_test_loader()
+    _, test_loader = get_train_and_test_loader(labels_file, img_dir)
 
     # Create testing metrics
     metric_collection = MetricCollection([
@@ -38,7 +57,7 @@ def evaluate_testset(name, model_name):
     list_of_labels = []
     list_of_preds = []
 
-
+    # Evaluation loop
     with torch.no_grad():
         for data in tqdm(test_loader):
             imgs, labels = data

@@ -5,6 +5,18 @@ from train import train
 from test import evaluate_testset
 
 def main(name, model_name, epochs, lr):
+    """
+    Train and evaluate a model.
+    Args:
+        name:
+            Name of the output files.
+        model_name:
+            Module name of the model architecture.
+        epochs:
+            Number of epochs the model should train. Default is 10.
+        lr:
+            Learning rate for the model training. Default is 0.001 .
+    """
     train(name, model_name, epochs, lr)
     evaluate_testset(name, model_name)
 

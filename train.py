@@ -12,6 +12,18 @@ import importlib
 from data_loading import get_train_and_test_loader
 
 def train(name, model_name, epochs=None, lr=None):
+    """
+    Train a deep learning model.
+    Args:
+        name:
+            Name of the output files.
+        model_name:
+            Module name of the model architecture.
+        epochs:
+            Number of epochs the model should train. Default is 10.
+        lr:
+            Learning rate for the model training. Default is 0.001 .
+    """
     if epochs == None:
         epochs = 10
 
@@ -49,6 +61,7 @@ def train(name, model_name, epochs=None, lr=None):
     f1_score = []
     auroc = []
 
+    # Training loop
     for epoch in tqdm(range(epochs)):
         running_loss = 0.0
         list_of_preds = []
@@ -57,8 +70,8 @@ def train(name, model_name, epochs=None, lr=None):
         for idx, data in tqdm(enumerate(train_loader, 0)):
             imgs, labels = data[0].to(device), data[1].to(torch.float32).to(device)
 
+            # make predictions, calculate loss and backpropagate
             optimizer.zero_grad()
-
             preds = net(imgs)
             loss = criterion(preds, labels)
             loss.backward()

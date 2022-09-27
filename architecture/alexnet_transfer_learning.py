@@ -3,6 +3,9 @@ from torchvision.models import alexnet
 from torchvision.models.alexnet import AlexNet_Weights
 
 class Net(nn.Module):
+    """
+    Class implementing the transfer learning model using AlexNet.
+    """
     def __init__(self, img_dim):
         super().__init__()
 
@@ -22,6 +25,12 @@ class Net(nn.Module):
 
 
     def forward(self, img):
+        """
+        Forward pass.
+        Args:
+            img:
+                Images to calculate the forward pass.
+        """
         img = self.model.forward(img)
         img = self.sigmoid(img)
         img = img.flatten()

@@ -9,22 +9,32 @@ from tqdm import tqdm
 import pandas as pd
 from argparse import ArgumentParser
 import importlib
+import sys
+import os
 
-from ..data_loading import get_train_and_test_loader
+
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+
+import data_loading
 
 
 def train_and_test(param, trial, name, model_name, epochs=None):
-    # def train_and_test(name, model_name, epochs=None):
+    """
+    Train and test a model with different hyperparamters.
+    """
     if epochs == None:
         epochs = 10
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    # Import model, e.g. "cnn_2
+    # Import model for hyperparater tuning, e.g. "densenet"
     model_module = importlib.import_module(f"architecture.{model_name}")
 
     # Create neural network
     net = model_module.Net(
+        img_dim=[3, 96, 96],
         growth_rate=param["growth_rate"],
         num_init_features=param["num_init_features"],
         drop_rate=param["drop_rate"],
@@ -32,7 +42,7 @@ def train_and_test(param, trial, name, model_name, epochs=None):
     net = net.to(device)
 
     # Create data loader
-    train_loader, test_loader = get_train_and_test_loader()
+    train_loader, test_loader = data_loading.get_train_and_test_loader(labels_file="../data/train_labels.csv", img_dir="../data/train/")
 
     criterion = nn.BCELoss()
     optimizer = optim.Adam(
@@ -42,6 +52,7 @@ def train_and_test(param, trial, name, model_name, epochs=None):
     losses = []
     accuracy = 0
 
+    # Training loop
     for epoch in tqdm(range(epochs)):
         running_loss = 0.0
         list_of_preds = []
@@ -95,20 +106,6 @@ def train_and_test(param, trial, name, model_name, epochs=None):
 
         # Calculate metrics
         metrics = metric_collection_test(preds, labels)
-
-        # Create dataframe
-        test_metrics = pd.DataFrame(
-            {
-                "accuracy": metrics["Accuracy"].item(),
-                "precision": metrics["Precision"].item(),
-                "recall": metrics["Recall"].item(),
-                "f1_score": metrics["F1Score"].item(),
-            },
-            index=[0],
-        )
-
-        # Save testing metrics
-        test_metrics.to_csv(f"{name}_test.csv")
 
         # Add prune mechanism
         accuracy = metrics["Accuracy"].item()

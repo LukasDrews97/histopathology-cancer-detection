@@ -1,6 +1,9 @@
 import torch.nn as nn
 
 class Net(nn.Module):
+    """
+    Class implementing the extended cnn model.
+    """
     def __init__(self, img_dim):
         super().__init__()
         modules = []
@@ -47,4 +50,10 @@ class Net(nn.Module):
         self.model = nn.Sequential(*modules)
     
     def forward(self, imgs):
+        """
+        Forward pass.
+        Args:
+            imgs:
+                Images to calculate the forward pass.
+        """
         return self.model(imgs).flatten()

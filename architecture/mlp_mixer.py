@@ -1,6 +1,9 @@
 import torch.nn as nn
 
 class MlpBlock(nn.Module):
+    """
+    Class implementing the MlpBlock used for token and channel mixing.
+    """
     def __init__(self, dim, hidden_dim=None, dropout=0.0):
         super().__init__()
         if hidden_dim is None:
@@ -15,9 +18,18 @@ class MlpBlock(nn.Module):
         self.model = nn.Sequential(*modules)
 
     def forward(self, x):
+        """
+        Forward pass.
+        Args:
+            x:
+                Images to calculate the forward pass.
+        """
         return self.model(x)
 
 class MixerBlock(nn.Module):
+    """
+    Class implementing the mixer block.
+    """
     def __init__(self, dim, num_patches, token_dim, channel_dim, dropout=0.0):
         super().__init__()   
         self.layer_norm_1 = nn.LayerNorm(dim)
@@ -27,6 +39,12 @@ class MixerBlock(nn.Module):
         self.channel_mixing_block = MlpBlock(dim, channel_dim, dropout=dropout)
 
     def forward(self, x):
+        """
+        Forward pass.
+        Args:
+            x:
+                Images to calculate the forward pass.
+        """
         _x = self.layer_norm_1(x)
         _x = _x.permute(0,2,1)
         _x = self.token_mixing_block(_x)
@@ -36,6 +54,9 @@ class MixerBlock(nn.Module):
         return _x
 
 class Net(nn.Module):
+    """
+    Class implementing the mlp mixer model.
+    """
     def __init__(self, img_dim):
         super().__init__()   
         self.batch_size = img_dim[0]
@@ -60,6 +81,12 @@ class Net(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
+        """
+        Forward pass.
+        Args:
+            x:
+                Images to calculate the forward pass.
+        """
         x = self.create_patches(x)
         b, c, _, _ = x.shape
         x = x.view(b,c,-1).transpose(1,2)
